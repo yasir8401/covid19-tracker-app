@@ -3,9 +3,9 @@ import { Card, CardContent, Typography, Grid } from "@material-ui/core";
 import styles from "./Cards.module.css";
 import CountUp from "react-countup";
 import cx from "classnames";
+import ReactTooltip from "react-tooltip";
 
 const Cards = ({ data: { confirmed, recovered, deaths, lastUpdate } }) => {
-  console.log(lastUpdate);
   if (!confirmed) {
     return "Loading ....";
   }
@@ -23,16 +23,16 @@ const Cards = ({ data: { confirmed, recovered, deaths, lastUpdate } }) => {
             <Typography color="textSecondary" gutterBottom>
               Infected
             </Typography>
-            <Typography variant="h5">
+            <Typography variant="h5" data-tip="Total Active Cases">
               <CountUp
                 start={0}
                 end={confirmed.value}
-                duration={2.5}
+                duration={2}
                 separator=","
               />
             </Typography>
 
-            <Typography color="secondary">
+            <Typography color="secondary" data-tip="Last Update">
               {new Date(lastUpdate).toDateString()}{" "}
               {new Date(lastUpdate).toLocaleTimeString()}
             </Typography>
@@ -52,16 +52,16 @@ const Cards = ({ data: { confirmed, recovered, deaths, lastUpdate } }) => {
             <Typography color="textSecondary" gutterBottom>
               Recovered
             </Typography>
-            <Typography variant="h5">
+            <Typography variant="h5" data-tip="Total Recovered Cases">
               <CountUp
                 start={0}
                 end={recovered.value}
-                duration={2.5}
+                duration={2}
                 separator=","
               />
             </Typography>
 
-            <Typography color="secondary">
+            <Typography color="secondary" data-tip="Last Update">
               {new Date(lastUpdate).toDateString()}{" "}
               {new Date(lastUpdate).toLocaleTimeString()}
             </Typography>
@@ -81,16 +81,16 @@ const Cards = ({ data: { confirmed, recovered, deaths, lastUpdate } }) => {
             <Typography color="textSecondary" gutterBottom>
               Deaths
             </Typography>
-            <Typography variant="h5">
+            <Typography variant="h5" data-tip="Total Deaths">
               <CountUp
                 start={0}
                 end={deaths.value}
-                duration={2.5}
+                duration={2}
                 separator=","
               />
             </Typography>
 
-            <Typography color="secondary">
+            <Typography color="secondary" data-tip="Last Update">
               {new Date(lastUpdate).toDateString()}{" "}
               {new Date(lastUpdate).toLocaleTimeString()}
             </Typography>
@@ -100,6 +100,7 @@ const Cards = ({ data: { confirmed, recovered, deaths, lastUpdate } }) => {
           </CardContent>
         </Grid>
       </Grid>
+      <ReactTooltip />
     </div>
   );
 };
