@@ -12,7 +12,6 @@ const Chart = ({ data: { confirmed, recovered, deaths }, country }) => {
 
       setDailyData(initialDailyData);
     };
-    console.log(dailyData);
     fetchAPI();
   }, []);
 
