@@ -30,13 +30,9 @@ const StyledTableCell = withStyles((theme) => ({
   },
 }))(TableCell);
 
-// const StyledTableRow = withStyles((theme) => ({
-//   root: {
-//     "&:nth-of-type(odd)": {
-//       backgroundColor: theme.palette.action.hover,
-//     },
-//   },
-// }))(TableRow);
+function formatNumber(num) {
+  return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+}
 
 export const CountryWise = () => {
   const [countryWiseData, setcountryWiseData] = useState([]);
@@ -81,22 +77,34 @@ export const CountryWise = () => {
                     {row.country}
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                    {row.total_confirmed_cases}
+                    {formatNumber(row.total_confirmed_cases)}
+                  </StyledTableCell>
+                  <StyledTableCell
+                    align="right"
+                    style={{
+                      color: "red",
+                      backgroundColor: "rgba(255,255,153)",
+                    }}
+                  >
+                    {formatNumber(row.new_cases)}
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                    {row.new_cases}
+                    {formatNumber(row.total_deaths)}
+                  </StyledTableCell>
+                  <StyledTableCell
+                    align="right"
+                    style={{
+                      color: "red",
+                      backgroundColor: "rgba(255,255,153)",
+                    }}
+                  >
+                    {formatNumber(row.new_deaths)}
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                    {row.total_deaths}
+                    {formatNumber(row.total_active_cases)}
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                    {row.new_deaths}
-                  </StyledTableCell>
-                  <StyledTableCell align="right">
-                    {row.total_active_cases}
-                  </StyledTableCell>
-                  <StyledTableCell align="right">
-                    {row.total_recovered}
+                    {formatNumber(row.total_recovered)}
                   </StyledTableCell>
                 </TableRow>
               ))}

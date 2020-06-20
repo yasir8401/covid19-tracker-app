@@ -3,3 +3,9 @@
   position: "sticky";
   top: 0;
 }
+
+.container {
+  display: flex;
+  justify-items: center;
+  width: 85%;
+}

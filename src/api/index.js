@@ -1,20 +1,28 @@
 import axios from "axios";
 
-const url = "https://covid19.mathdro.id/api";
-const covid_url = "https://covid-19.dataflowkit.com/v1";
+//const url = "https://covid19.mathdro.id/api";
+//const covid_url = "https://covid-19.dataflowkit.com/v1";
+const ninja_url = "https://corona.lmao.ninja";
 
 export const fetchData = async (country) => {
-  let _url = url;
+  let _url = `${ninja_url}/v2/all`;
 
   if (country) {
-    _url = `${url}/countries/${country}`;
+    _url = `${ninja_url}/v2/countries/${country}`;
   }
   try {
     const {
-      data: { confirmed, recovered, deaths, lastUpdate },
+      data: { cases, recovered, deaths, updated, active, critical },
     } = await axios.get(_url);
 
-    return { confirmed, recovered, deaths, lastUpdate };
+    return {
+      confirmed: cases,
+      recovered,
+      deaths,
+      lastUpdate: updated,
+      active,
+      critical,
+    };
   } catch (error) {
     console.log(error);
   }
@@ -22,13 +30,19 @@ export const fetchData = async (country) => {
 
 export const fetchDailyData = async () => {
   try {
-    const { data } = await axios.get(`${url}/daily`);
+    const {
+      data: { cases, deaths },
+    } = await axios.get(`${ninja_url}/v2/historical/all?lastdays=all`);
 
-    const modifiedData = data.map((dailyData) => ({
-      confirmed: dailyData.confirmed.total,
-      deaths: dailyData.deaths.total,
-      date: dailyData.reportDate,
-    }));
+    const modifiedData = [];
+    for (var i in cases) {
+      var element = {};
+      element.confirmed = cases[i];
+      element.deaths = deaths[i];
+      element.date = i;
+      modifiedData.push(element);
+    }
+
     return modifiedData;
   } catch (error) {
     console.log(error);
@@ -37,10 +51,9 @@ export const fetchDailyData = async () => {
 
 export const fetchCountries = async () => {
   try {
-    const {
-      data: { countries },
-    } = await axios.get(`${url}/countries`);
-    return countries.map((countries) => countries.name);
+    const { data } = await axios.get(`${ninja_url}/v2/countries`);
+
+    return data.map((x) => x.country);
   } catch (error) {
     console.log(error);
   }
@@ -48,20 +61,53 @@ export const fetchCountries = async () => {
 
 export const fetchCountryWiseData = async () => {
   try {
-    const { data } = await axios.get(covid_url);
+    const { data } = await axios.get(`${ninja_url}/v2/countries`);
+
+    data.sort(function (obj1, obj2) {
+      // Ascending: first age less than the previous
+      return obj2.cases - obj1.cases;
+    });
 
     const modifiedData = data.map((countryWiseData) => ({
-      total_active_cases: countryWiseData["Active Cases_text"],
-      country: countryWiseData["Country_text"],
-      total_confirmed_cases: countryWiseData["Total Cases_text"],
-      total_deaths: countryWiseData["Total Deaths_text"],
-      total_recovered: countryWiseData["Total Recovered_text"],
-      last_update: countryWiseData["Last Update"],
-      new_cases: countryWiseData["New Cases_text"],
-      new_deaths: countryWiseData["New Deaths_text"],
+      total_active_cases: countryWiseData["active"],
+      country: countryWiseData["country"],
+      total_confirmed_cases: countryWiseData["cases"],
+      total_deaths: countryWiseData["deaths"],
+      total_recovered: countryWiseData["recovered"],
+      new_cases: countryWiseData["todayCases"],
+      new_deaths: countryWiseData["todayDeaths"],
     }));
 
-    console.log(modifiedData);
+    var element = {};
+    element.total_active_cases = modifiedData
+      .map((x) => x.total_active_cases)
+      .reduce((total, record) => record + total);
+
+    element.country = "World";
+
+    element.total_confirmed_cases = modifiedData
+      .map((x) => x.total_confirmed_cases)
+      .reduce((total, record) => record + total);
+
+    element.total_deaths = modifiedData
+      .map((x) => x.total_deaths)
+      .reduce((total, record) => record + total);
+
+    element.total_recovered = modifiedData
+      .map((x) => x.total_recovered)
+      .reduce((total, record) => record + total);
+
+    element.new_cases = modifiedData
+      .map((x) => x.new_cases)
+      .reduce((total, record) => record + total);
+
+    element.new_deaths = modifiedData
+      .map((x) => x.new_deaths)
+      .reduce((total, record) => record + total);
+
+    modifiedData.unshift(element);
+    //modifiedData.push(element);
+
     return modifiedData;
   } catch (error) {
     console.log(error);

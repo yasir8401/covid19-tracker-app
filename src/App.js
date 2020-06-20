@@ -26,6 +26,7 @@ export class App extends Component {
 
   render() {
     const { data, country } = this.state;
+
     return (
       <div className={styles.container}>
         <img className={styles.imgage} src={coronaImage} alt="COVID19" />
