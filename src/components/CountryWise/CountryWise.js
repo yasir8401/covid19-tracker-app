@@ -30,13 +30,13 @@ const StyledTableCell = withStyles((theme) => ({
   },
 }))(TableCell);
 
-const StyledTableRow = withStyles((theme) => ({
-  root: {
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
-    },
-  },
-}))(TableRow);
+// const StyledTableRow = withStyles((theme) => ({
+//   root: {
+//     "&:nth-of-type(odd)": {
+//       backgroundColor: theme.palette.action.hover,
+//     },
+//   },
+// }))(TableRow);
 
 export const CountryWise = () => {
   const [countryWiseData, setcountryWiseData] = useState([]);
