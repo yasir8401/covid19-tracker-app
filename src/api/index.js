@@ -28,19 +28,40 @@ export const fetchData = async (country) => {
   }
 };
 
-export const fetchDailyData = async () => {
+export const fetchDailyData = async (country) => {
   try {
-    const {
-      data: { cases, deaths },
-    } = await axios.get(`${ninja_url}/v2/historical/all?lastdays=all`);
+    let _url = `${ninja_url}/v2/historical/all?lastdays=all`;
+
+    if (country) {
+      _url = `${ninja_url}/v2/historical/${country}?lastdays=all`;
+    }
 
     const modifiedData = [];
-    for (var i in cases) {
-      var element = {};
-      element.confirmed = cases[i];
-      element.deaths = deaths[i];
-      element.date = i;
-      modifiedData.push(element);
+    if (country) {
+      const {
+        data: {
+          timeline: { cases, deaths },
+        },
+      } = await axios.get(_url);
+      for (var i in cases) {
+        var element = {};
+        element.confirmed = cases[i];
+        element.deaths = deaths[i];
+        element.date = i;
+        modifiedData.push(element);
+      }
+    } else {
+      const {
+        data: { cases, deaths },
+      } = await axios.get(_url);
+
+      for (var i in cases) {
+        var element = {};
+        element.confirmed = cases[i];
+        element.deaths = deaths[i];
+        element.date = i;
+        modifiedData.push(element);
+      }
     }
 
     return modifiedData;
