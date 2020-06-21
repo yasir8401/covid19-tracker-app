@@ -46,71 +46,78 @@ export const CountryWise = () => {
   }, [setcountryWiseData]);
   const classes = useStyles();
   return (
-    <div className={styles.container}>
-      <TableContainer component={Paper}>
-        <Table stickyHeader className={classes.table} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <StyledTableCell>#</StyledTableCell>
-              <StyledTableCell>Country Name</StyledTableCell>
-              <StyledTableCell align="right">Total Cases</StyledTableCell>
-              <StyledTableCell align="right">New Cases</StyledTableCell>
-              <StyledTableCell align="right">Total Deaths</StyledTableCell>
-              <StyledTableCell align="right">New Deaths</StyledTableCell>
-              <StyledTableCell align="right">
-                Total Active Cases
-              </StyledTableCell>
-              <StyledTableCell align="right">
-                Total Recovered Cases
-              </StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {countryWiseData
-              .filter((row) => row.country !== undefined)
-              .map((row, i) => (
-                <TableRow key={i}>
-                  <StyledTableCell component="th" scope="row">
-                    {++i}
-                  </StyledTableCell>
-                  <StyledTableCell component="th" scope="row">
-                    {row.country}
-                  </StyledTableCell>
-                  <StyledTableCell align="right">
-                    {formatNumber(row.total_confirmed_cases)}
-                  </StyledTableCell>
-                  <StyledTableCell
-                    align="right"
-                    style={{
-                      color: "red",
-                      backgroundColor: "rgba(255,255,153)",
-                    }}
-                  >
-                    {formatNumber(row.new_cases)}
-                  </StyledTableCell>
-                  <StyledTableCell align="right">
-                    {formatNumber(row.total_deaths)}
-                  </StyledTableCell>
-                  <StyledTableCell
-                    align="right"
-                    style={{
-                      color: "red",
-                      backgroundColor: "rgba(255,255,153)",
-                    }}
-                  >
-                    {formatNumber(row.new_deaths)}
-                  </StyledTableCell>
-                  <StyledTableCell align="right">
-                    {formatNumber(row.total_active_cases)}
-                  </StyledTableCell>
-                  <StyledTableCell align="right">
-                    {formatNumber(row.total_recovered)}
-                  </StyledTableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </div>
+    <React.Fragment>
+      <h2>Reported Cases and Deaths by Country</h2>
+      <div className={styles.container}>
+        <TableContainer component={Paper}>
+          <Table
+            stickyHeader
+            className={classes.table}
+            aria-label="simple table"
+          >
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>#</StyledTableCell>
+                <StyledTableCell>Country Name</StyledTableCell>
+                <StyledTableCell align="right">Total Cases</StyledTableCell>
+                <StyledTableCell align="right">New Cases</StyledTableCell>
+                <StyledTableCell align="right">Total Deaths</StyledTableCell>
+                <StyledTableCell align="right">New Deaths</StyledTableCell>
+                <StyledTableCell align="right">
+                  Total Active Cases
+                </StyledTableCell>
+                <StyledTableCell align="right">
+                  Total Recovered Cases
+                </StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {countryWiseData
+                .filter((row) => row.country !== undefined)
+                .map((row, i) => (
+                  <TableRow key={i}>
+                    <StyledTableCell component="th" scope="row">
+                      {++i}
+                    </StyledTableCell>
+                    <StyledTableCell component="th" scope="row">
+                      {row.country}
+                    </StyledTableCell>
+                    <StyledTableCell align="right">
+                      {formatNumber(row.total_confirmed_cases)}
+                    </StyledTableCell>
+                    <StyledTableCell
+                      align="right"
+                      style={{
+                        color: "red",
+                        backgroundColor: "rgba(255,255,153)",
+                      }}
+                    >
+                      {formatNumber(row.new_cases)}
+                    </StyledTableCell>
+                    <StyledTableCell align="right">
+                      {formatNumber(row.total_deaths)}
+                    </StyledTableCell>
+                    <StyledTableCell
+                      align="right"
+                      style={{
+                        color: "red",
+                        backgroundColor: "rgba(255,255,153)",
+                      }}
+                    >
+                      {formatNumber(row.new_deaths)}
+                    </StyledTableCell>
+                    <StyledTableCell align="right">
+                      {formatNumber(row.total_active_cases)}
+                    </StyledTableCell>
+                    <StyledTableCell align="right">
+                      {formatNumber(row.total_recovered)}
+                    </StyledTableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
+    </React.Fragment>
   );
 };

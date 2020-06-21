@@ -39,9 +39,15 @@ const Chart = ({
           },
         ],
       }}
+      options={{
+        title: {
+          display: true,
+          text: `Historical Data of ${country ? country : "World"}`,
+          fontSize: 16,
+        },
+      }}
     />
   ) : null;
-  console.log(fetchedDailyData);
   const lineChartCountry = fetchedDailyData.length ? (
     <Line
       data={{
@@ -61,6 +67,13 @@ const Chart = ({
             fill: true,
           },
         ],
+      }}
+      options={{
+        title: {
+          display: true,
+          text: `Historical Data of ${country ? country : "World"}`,
+          fontSize: 16,
+        },
       }}
     />
   ) : null;
@@ -83,7 +96,11 @@ const Chart = ({
       }}
       options={{
         legend: { display: false },
-        title: { display: true, text: `Current State in ${country}` },
+        title: {
+          display: true,
+          text: `Current State in ${country ? country : "World"}`,
+          fontSize: 16,
+        },
       }}
     />
   ) : null;
@@ -102,7 +119,6 @@ const Chart = ({
           <br />
           <div className={styles.container}> {lineChart}</div>
         </React.Fragment>
-        // <div className={styles.container}>{lineChart}</div>
       )}
     </React.Fragment>
   );

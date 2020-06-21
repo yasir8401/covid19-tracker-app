@@ -35,34 +35,41 @@ export const fetchDailyData = async (country) => {
     if (country) {
       _url = `${ninja_url}/v2/historical/${country}?lastdays=all`;
     }
-
+    let _cases = {};
+    let _deaths = {};
     const modifiedData = [];
+    // const perDayCases = [];
     if (country) {
-      const {
+      let {
         data: {
           timeline: { cases, deaths },
         },
       } = await axios.get(_url);
-      for (var i in cases) {
-        var element = {};
-        element.confirmed = cases[i];
-        element.deaths = deaths[i];
-        element.date = i;
-        modifiedData.push(element);
-      }
+      _cases = cases;
+      _deaths = deaths;
     } else {
       const {
         data: { cases, deaths },
       } = await axios.get(_url);
-
-      for (var i in cases) {
-        var element = {};
-        element.confirmed = cases[i];
-        element.deaths = deaths[i];
-        element.date = i;
-        modifiedData.push(element);
-      }
+      _cases = cases;
+      _deaths = deaths;
     }
+
+    for (var i in _cases) {
+      var element = {};
+      element.confirmed = _cases[i];
+      element.deaths = _deaths[i];
+      element.date = i;
+      modifiedData.push(element);
+    }
+
+    // for (var i in _cases) {
+    //   var element = {};
+    //   element.confirmed = _cases[i];
+    //   element.deaths = _deaths[i];
+    //   element.date = i;
+    //   modifiedData.push(element);
+    // }
 
     return modifiedData;
   } catch (error) {
@@ -85,7 +92,6 @@ export const fetchCountryWiseData = async () => {
     const { data } = await axios.get(`${ninja_url}/v2/countries`);
 
     data.sort(function (obj1, obj2) {
-      // Ascending: first age less than the previous
       return obj2.cases - obj1.cases;
     });
 
