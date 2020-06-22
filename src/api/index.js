@@ -38,7 +38,7 @@ export const fetchDailyData = async (country) => {
     let _cases = {};
     let _deaths = {};
     const modifiedData = [];
-    // const perDayCases = [];
+    const _perDayNewCasesDeaths = [];
     if (country) {
       let {
         data: {
@@ -56,20 +56,34 @@ export const fetchDailyData = async (country) => {
     }
 
     for (var i in _cases) {
-      var element = {};
+      let element = {};
       element.confirmed = _cases[i];
       element.deaths = _deaths[i];
       element.date = i;
       modifiedData.push(element);
     }
 
-    // for (var i in _cases) {
-    //   var element = {};
-    //   element.confirmed = _cases[i];
-    //   element.deaths = _deaths[i];
-    //   element.date = i;
-    //   modifiedData.push(element);
-    // }
+    function diff(ary) {
+      var newA = [];
+      for (var i = 1; i < ary.length; i++) newA.push(ary[i] - ary[i - 1]);
+      return newA;
+    }
+
+    const dates = Object.keys(_cases);
+    const perDayNewCases = diff(Object.keys(_cases).map((key) => _cases[key]));
+    const perDayNewDeaths = diff(
+      Object.keys(_deaths).map((key) => _deaths[key])
+    );
+
+    for (var j = 0; j < perDayNewCases.length; j++) {
+      let element = {};
+      element.new_confirmed = perDayNewCases[j];
+      element.new_deaths = perDayNewDeaths[j];
+      element.date = dates[j + 1];
+      _perDayNewCasesDeaths.push(element);
+    }
+
+    modifiedData.perDayNewCasesDeaths = _perDayNewCasesDeaths;
 
     return modifiedData;
   } catch (error) {
@@ -81,7 +95,8 @@ export const fetchCountries = async () => {
   try {
     const { data } = await axios.get(`${ninja_url}/v2/countries`);
 
-    return data.map((x) => x.country);
+    return data;
+    // return data.map((x) => x.country);
   } catch (error) {
     console.log(error);
   }

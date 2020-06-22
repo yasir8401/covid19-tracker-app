@@ -7,6 +7,8 @@ import coronaImage from "./images/image.png";
 
 import { CountryWise } from "./components/CountryWise/CountryWise";
 
+import Chart2 from "./components/Chart/Chart2";
+
 export class App extends Component {
   state = {
     data: {},
@@ -15,8 +17,9 @@ export class App extends Component {
   };
   async componentDidMount() {
     const fetchedData = await fetchData();
+    const fetchedDailyData = await fetchDailyData();
 
-    this.setState({ data: fetchedData });
+    this.setState({ data: fetchedData, fetchedDailyData: fetchedDailyData });
   }
 
   handleCountryChange = async (country) => {
@@ -43,6 +46,7 @@ export class App extends Component {
           country={country}
           fetchedDailyData={fetchedDailyData}
         />
+        <Chart2 country={country} fetchedDailyData={fetchedDailyData} />
         <br />
         <CountryWise />
       </div>
